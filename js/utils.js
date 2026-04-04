@@ -44,6 +44,13 @@ function sanitizeHTML(str) {
   return temp.innerHTML;
 }
 
+/** 產生貓咪圖片 HTML：優先載入 .jpg，失敗則 fallback 到 .svg */
+function catImgTag(name, cssClass, alt) {
+  const jpg = `images/cat/${name}.jpg`;
+  const svg = `images/cat/${name}.svg`;
+  return `<img class="${cssClass}" src="${jpg}" alt="${alt || ''}" onerror="this.onerror=null;this.src='${svg}'">`;
+}
+
 function saveToLocal(key, value) {
   try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* quota exceeded */ }
 }

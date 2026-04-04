@@ -97,8 +97,11 @@ const WeatherModule = (() => {
     if (phase === 'after') {
       container.innerHTML = `
         <div class="weather-post-trip">
-          <div class="post-trip-label">🐱 旅程回憶模式</div>
-          <p style="color:#999;font-size:0.9rem;">美好的14天旅程已經結束，期待下次冒險！</p>
+          ${catImgTag('neko-wave', 'weather-cat-large', '旅伴小橘')}
+          <div class="pre-trip-content">
+            <div class="post-trip-label">旅程回憶模式</div>
+            <p style="color:#999;font-size:0.9rem;">美好的14天旅程已經結束，期待下次冒險！</p>
+          </div>
         </div>`;
       return;
     }
@@ -108,9 +111,12 @@ const WeatherModule = (() => {
       const schedule = TRIP_DATA.days[1]; // show Munich weather preview
       container.innerHTML = `
         <div class="weather-pre-trip">
-          <div class="pre-trip-label">🐱 距離出發還有</div>
-          <div class="pre-trip-days">${cd.days} 天</div>
-          <p style="color:#999;font-size:0.85rem;margin-top:8px;">正在查詢慕尼黑天氣預覽...</p>
+          ${catImgTag('neko-wave', 'weather-cat-large', '旅伴小橘')}
+          <div class="pre-trip-content">
+            <div class="pre-trip-label">距離出發還有</div>
+            <div class="pre-trip-days">${cd.days} 天</div>
+            <p style="color:#999;font-size:0.85rem;margin-top:8px;">正在查詢慕尼黑天氣預覽...</p>
+          </div>
         </div>`;
       fetchWeather(schedule.coordinates.lat, schedule.coordinates.lng).then(data => {
         if (!data || !data.current_weather) return;
@@ -125,7 +131,7 @@ const WeatherModule = (() => {
     // during trip
     const schedule = getTodaySchedule();
     if (!schedule) {
-      container.innerHTML = '<div class="weather-pre-trip"><div class="pre-trip-label">🐱 今天沒有行程安排</div></div>';
+      container.innerHTML = '<div class="weather-pre-trip"><div class="pre-trip-label">' + catImgTag('neko-sleep', 'weather-cat-icon') + ' 今天沒有行程安排</div></div>';
       return;
     }
 
@@ -133,7 +139,7 @@ const WeatherModule = (() => {
 
     fetchWeather(schedule.coordinates.lat, schedule.coordinates.lng).then(data => {
       if (!data || !data.current_weather) {
-        container.innerHTML = '<div class="weather-pre-trip"><div class="pre-trip-label">🐱 天氣查詢失敗，但不影響好心情！</div></div>';
+        container.innerHTML = '<div class="weather-pre-trip"><div class="pre-trip-label">' + catImgTag('neko-umbrella', 'weather-cat-icon') + ' 天氣查詢失敗，但不影響好心情！</div></div>';
         return;
       }
 
@@ -171,7 +177,7 @@ const WeatherModule = (() => {
               <div class="weather-suggestion"><i class="fas fa-tshirt"></i> ${sanitizeHTML(suggestion)}</div>
             </div>
           </div>
-          <div class="weather-cat"><div class="cat-emoji" style="font-size:3rem;">🐱</div></div>
+          <div class="weather-cat">${catImgTag(catPose || 'neko-sun', 'weather-cat-img')}</div>
         </div>
         ${hourlyHTML ? `<div class="weather-hourly">${hourlyHTML}</div>` : ''}`;
 
@@ -218,7 +224,7 @@ const WeatherModule = (() => {
 
     fetchDayForecast(lat, lng, dateStr).then(data => {
       if (!data || !data.daily || !data.daily.time || !data.daily.time.length) {
-        container.innerHTML = '<div class="day-weather-error">🐱 暫時無法取得天氣資料</div>';
+        container.innerHTML = '<div class="day-weather-error">' + catImgTag('neko-umbrella', 'weather-cat-icon') + ' 暫時無法取得天氣資料</div>';
         return;
       }
 

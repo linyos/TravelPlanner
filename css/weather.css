@@ -1,4 +1,7 @@
 /* ═══════ Weather Section ═══════ */
+.weather-cat-icon { width: 36px; height: 36px; object-fit: cover; vertical-align: middle; margin-right: 6px; border-radius: 50%; border: 2px solid var(--color-cat-orange, #e8a87c); }
+.weather-cat-img { width: 80px; height: 80px; object-fit: cover; border-radius: 50%; border: 3px solid var(--color-cat-orange, #e8a87c); }
+
 .weather-section {
   padding: var(--space-lg) 0;
   background: var(--color-bg);
@@ -144,8 +147,26 @@
 
 /* pre-trip / post-trip banners */
 .weather-pre-trip, .weather-post-trip {
-  padding: var(--space-lg);
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-lg) var(--space-xl);
+}
+
+.weather-cat-large {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-cat-orange, #e8a87c);
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.pre-trip-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .weather-pre-trip .pre-trip-label,
@@ -153,7 +174,6 @@
   font-family: var(--font-handwrite);
   font-size: 1.1rem;
   color: var(--color-secondary);
-  margin-bottom: var(--space-sm);
 }
 
 .weather-pre-trip .pre-trip-days {
@@ -161,6 +181,7 @@
   font-size: 2rem;
   color: var(--color-primary);
   font-weight: 700;
+  line-height: 1.1;
 }
 
 /* day weather mini widget (inside timeline cards) */

@@ -36,7 +36,7 @@
   <nav class="navbar" id="navbar">
     <div class="nav-container">
       <a href="#hero" class="nav-logo">
-        <span class="nav-logo-icon">🐱</span>
+        <img class="nav-logo-icon" src="images/cat/meme.jpg" alt="貓咪">
         <span class="nav-logo-text">德瑞14日</span>
       </a>
       <button class="hamburger" id="hamburger" aria-label="開啟選單" aria-expanded="false">
@@ -191,7 +191,30 @@
               <i class="fas fa-chevron-down accordion-arrow"></i>
             </button>
             <div class="accordion-body">
-              <table class="info-table">
+              <p class="flight-intro">為您整理本次行程的長榮航空直飛航班資訊如下：</p>
+              <div class="flight-info-detail">
+                <div class="flight-info-card">
+                  <div class="flight-info-header"><i class="fas fa-plane-departure"></i> 去程航班</div>
+                  <ul class="flight-info-list">
+                    <li><strong>航空公司：</strong>長榮航空</li>
+                    <li><strong>航班編號：</strong>BR-71</li>
+                    <li><strong>起降地點：</strong>台北 ✈ 德國慕尼黑</li>
+                    <li><strong>起降時間：</strong>晚上 23:25 起飛，於隔日上午 07:35 抵達</li>
+                    <li><strong>飛行日期：</strong>2026/04/06（一）→ 2026/04/07（二）</li>
+                  </ul>
+                </div>
+                <div class="flight-info-card">
+                  <div class="flight-info-header"><i class="fas fa-plane-arrival"></i> 回程航班</div>
+                  <ul class="flight-info-list">
+                    <li><strong>航空公司：</strong>長榮航空</li>
+                    <li><strong>航班編號：</strong>BR-72</li>
+                    <li><strong>起降地點：</strong>德國慕尼黑 ✈ 台北</li>
+                    <li><strong>起降時間：</strong>中午 12:00 起飛，於隔日清晨 06:20 抵達台灣</li>
+                    <li><strong>飛行日期：</strong>2026/04/18（六）→ 2026/04/19（日）</li>
+                  </ul>
+                </div>
+              </div>
+              <table class="info-table" style="margin-top:1rem">
                 <thead><tr><th>方向</th><th>航班</th><th>航線</th><th>出發</th><th>抵達</th></tr></thead>
                 <tbody>
                   <tr><td>去程</td><td>BR-71 長榮航空</td><td>桃園 TPE → 慕尼黑 MUC</td><td>04/06 23:25</td><td>04/07 07:35</td></tr>

@@ -6,12 +6,17 @@ const CatModule = (() => {
   let idleTimer = null;
   let currentPose = 'wave';
 
-  const POSES = {
-    wave: '😺',
-    walk: '🐱',
+  // 有圖片的狀態：優先用 .jpg，找不到就 fallback 到 .svg
+  const IMAGE_POSES = {
+    wave:     { jpg: 'images/cat/neko-wave.jpg',     svg: 'images/cat/neko-wave.svg',     emoji: '😺' },
+    walk:     { jpg: 'images/cat/neko-walk.jpg',     svg: 'images/cat/neko-walk.svg',     emoji: '🐱' },
+    sun:      { jpg: 'images/cat/neko-sun.jpg',      svg: 'images/cat/neko-sun.svg',      emoji: '😸' },
+    umbrella: { jpg: 'images/cat/neko-umbrella.jpg', svg: 'images/cat/neko-umbrella.svg', emoji: '🙀' },
+  };
+
+  // 純 emoji 的狀態
+  const EMOJI_POSES = {
     sleep: '😴',
-    sun: '😸',
-    umbrella: '🙀',
     snow: '❄️🐱',
     camera: '📸',
     train: '🚂🐱',
@@ -25,7 +30,7 @@ const CatModule = (() => {
     bubble = document.getElementById('catBubble');
     if (!companion) return;
 
-    avatar.innerHTML = `<span class="cat-emoji">${POSES.wave}</span>`;
+    renderAvatar('wave');
     companion.classList.add('waving');
 
     companion.addEventListener('click', onCatClick);
@@ -51,11 +56,35 @@ const CatModule = (() => {
     });
   }
 
+  function renderAvatar(pose) {
+    if (!avatar) return;
+    const imgData = IMAGE_POSES[pose];
+    if (imgData) {
+      // 優先載入 jpg，失敗則 svg，再失敗則 emoji
+      const img = new Image();
+      img.className = 'cat-img';
+      img.alt = pose;
+      img.onload = () => { avatar.innerHTML = ''; avatar.appendChild(img); };
+      img.onerror = () => {
+        // jpg 失敗，嘗試 svg
+        const svgImg = new Image();
+        svgImg.className = 'cat-img';
+        svgImg.alt = pose;
+        svgImg.onload = () => { avatar.innerHTML = ''; avatar.appendChild(svgImg); };
+        svgImg.onerror = () => { avatar.innerHTML = `<span class="cat-emoji">${imgData.emoji}</span>`; };
+        svgImg.src = imgData.svg;
+      };
+      img.src = imgData.jpg;
+    } else {
+      const emoji = EMOJI_POSES[pose] || IMAGE_POSES.wave.emoji;
+      avatar.innerHTML = `<span class="cat-emoji">${emoji}</span>`;
+    }
+  }
+
   function setPose(pose) {
     if (!avatar) return;
     currentPose = pose;
-    const emoji = POSES[pose] || POSES.wave;
-    avatar.innerHTML = `<span class="cat-emoji">${emoji}</span>`;
+    renderAvatar(pose);
 
     companion.classList.remove('waving', 'idle', 'sleeping', 'belly-up');
     if (pose === 'wave') companion.classList.add('waving');
@@ -71,7 +100,7 @@ const CatModule = (() => {
     if (clickCount >= 5) {
       clickCount = 0;
       companion.classList.add('belly-up');
-      avatar.innerHTML = `<span class="cat-emoji">${POSES.belly}</span>`;
+      renderAvatar('belly');
       showBubble('喵嗚～被發現了！(翻肚)');
       setTimeout(() => {
         companion.classList.remove('belly-up');

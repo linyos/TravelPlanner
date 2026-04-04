@@ -36,8 +36,9 @@ const TimelineModule = (() => {
       // cat decoration every 3 days
       let catDeco = '';
       if (idx % 3 === 1 && idx < days.length - 1) {
-        const poses = ['🐱', '📸', '😸', '😺', '🙀'];
-        catDeco = `<div class="timeline-cat"><span style="font-size:2rem">${poses[Math.floor(idx / 3) % poses.length]}</span></div>`;
+        const catNames = ['neko-wave', 'neko-camera', 'neko-sun', 'neko-walk', 'neko-umbrella'];
+        const name = catNames[Math.floor(idx / 3) % catNames.length];
+        catDeco = `<div class="timeline-cat">${catImgTag(name, 'timeline-cat-img', '旅伴小橘')}</div>`;
       }
 
       html += `

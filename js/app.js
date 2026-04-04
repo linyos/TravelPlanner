@@ -95,10 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
   accordionHeaders.forEach(header => {
     header.addEventListener('click', () => {
       const item = header.parentElement;
-      const wasActive = item.classList.contains('active');
+      const wasOpen = item.classList.contains('open');
       // close all
-      document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('active'));
-      if (!wasActive) item.classList.add('active');
+      document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
     });
   });
 
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const saved = getFromLocal('packingChecked') || {};
     let html = '';
     PACKING_LIST.forEach(cat => {
-      html += `<div class="checklist-category"><h4>${cat.emoji} ${sanitizeHTML(cat.category)}</h4><div class="checklist-grid">`;
+      html += `<div class="checklist-category"><h4>${sanitizeHTML(cat.category)}</h4><div class="checklist-grid">`;
       cat.items.forEach(item => {
         const key = `${cat.category}_${item}`;
         const checked = saved[key] ? 'checked' : '';
