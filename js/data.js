@@ -35,22 +35,22 @@ const TRIP_DATA = {
 
 /* ═══════ Gallery Data (placeholder) ═══════ */
 const GALLERY_DATA = [
-  { id: 1, title: "國王湖", subtitle: "DAY 2 · 德國", tag: "lake", emoji: "🏞️", bgClass: "lake", day: 2 },
-  { id: 2, title: "新天鵝堡", subtitle: "DAY 3 · 德國", tag: "castle", emoji: "🏰", bgClass: "castle", day: 3 },
-  { id: 3, title: "琉森湖遊船", subtitle: "DAY 4 · 瑞士", tag: "lake", emoji: "⛵", bgClass: "lake", day: 4 },
-  { id: 4, title: "冰河列車", subtitle: "DAY 5 · 瑞士", tag: "train", emoji: "🚂", bgClass: "train", day: 5 },
-  { id: 5, title: "馬特洪峰", subtitle: "DAY 6 · 策馬特", tag: "nature", emoji: "🏔️", bgClass: "mountain", day: 6 },
-  { id: 6, title: "3100 高山飯店", subtitle: "DAY 6 · 策馬特", tag: "nature", emoji: "⛰️", bgClass: "mountain", day: 6 },
-  { id: 7, title: "西墉古堡", subtitle: "DAY 7 · 蒙投", tag: "castle", emoji: "🏯", bgClass: "castle", day: 7 },
-  { id: 8, title: "黃金景觀列車", subtitle: "DAY 7 · 瑞士", tag: "train", emoji: "🚃", bgClass: "train", day: 7 },
-  { id: 9, title: "少女峰", subtitle: "DAY 8 · 瑞士", tag: "nature", emoji: "❄️", bgClass: "mountain", day: 8 },
-  { id: 10, title: "伯恩舊城區", subtitle: "DAY 9 · 瑞士", tag: "town", emoji: "🏛️", bgClass: "town", day: 9 },
-  { id: 11, title: "柯瑪小威尼斯", subtitle: "DAY 9 · 法國", tag: "town", emoji: "🎨", bgClass: "town", day: 9 },
-  { id: 12, title: "史特拉斯堡", subtitle: "DAY 10 · 法國", tag: "town", emoji: "⛪", bgClass: "town", day: 10 },
-  { id: 13, title: "海德堡城堡", subtitle: "DAY 10 · 德國", tag: "castle", emoji: "🏰", bgClass: "castle", day: 10 },
-  { id: 14, title: "羅騰堡", subtitle: "DAY 11 · 德國", tag: "town", emoji: "🏘️", bgClass: "town", day: 11 },
-  { id: 15, title: "慕尼黑新市政廳", subtitle: "DAY 12 · 德國", tag: "town", emoji: "🕰️", bgClass: "town", day: 12 },
-  { id: 16, title: "威斯教堂", subtitle: "DAY 3 · 德國", tag: "castle", emoji: "⛪", bgClass: "castle", day: 3 },
+  { id: 1, title: "國王湖", subtitle: "DAY 2 · 德國", tag: "lake", emoji: "🏞️", bgClass: "lake", day: 2, image: "images/gallery/koenigssee.jpg" },
+  { id: 2, title: "新天鵝堡", subtitle: "DAY 3 · 德國", tag: "castle", emoji: "🏰", bgClass: "castle", day: 3, image: "images/gallery/neuschwanstein.jpg" },
+  { id: 3, title: "琉森湖遊船", subtitle: "DAY 4 · 瑞士", tag: "lake", emoji: "⛵", bgClass: "lake", day: 4, image: "images/gallery/lucerne-lake.jpg" },
+  { id: 4, title: "冰河列車", subtitle: "DAY 5 · 瑞士", tag: "train", emoji: "🚂", bgClass: "train", day: 5, image: "images/gallery/glacier-express.jpg" },
+  { id: 5, title: "馬特洪峰", subtitle: "DAY 6 · 策馬特", tag: "nature", emoji: "🏔️", bgClass: "mountain", day: 6, image: "images/gallery/matterhorn.jpg" },
+  { id: 6, title: "3100 高山飯店", subtitle: "DAY 6 · 策馬特", tag: "nature", emoji: "⛰️", bgClass: "mountain", day: 6, image: "images/gallery/kulmhotel-3100.jpg" },
+  { id: 7, title: "西墉古堡", subtitle: "DAY 7 · 蒙投", tag: "castle", emoji: "🏯", bgClass: "castle", day: 7, image: "images/gallery/chillon-castle.jpg" },
+  { id: 8, title: "黃金景觀列車", subtitle: "DAY 7 · 瑞士", tag: "train", emoji: "🚃", bgClass: "train", day: 7, image: "images/gallery/golden-pass.jpg" },
+  { id: 9, title: "少女峰", subtitle: "DAY 8 · 瑞士", tag: "nature", emoji: "❄️", bgClass: "mountain", day: 8, image: "images/gallery/jungfrau.jpg" },
+  { id: 10, title: "伯恩舊城區", subtitle: "DAY 9 · 瑞士", tag: "town", emoji: "🏛️", bgClass: "town", day: 9, image: "images/gallery/bern-old-town.jpg" },
+  { id: 11, title: "柯瑪小威尼斯", subtitle: "DAY 9 · 法國", tag: "town", emoji: "🎨", bgClass: "town", day: 9, image: "images/gallery/colmar.jpg" },
+  { id: 12, title: "史特拉斯堡", subtitle: "DAY 10 · 法國", tag: "town", emoji: "⛪", bgClass: "town", day: 10, image: "images/gallery/strasbourg.jpg" },
+  { id: 13, title: "海德堡城堡", subtitle: "DAY 10 · 德國", tag: "castle", emoji: "🏰", bgClass: "castle", day: 10, image: "images/gallery/heidelberg.jpg" },
+  { id: 14, title: "羅騰堡", subtitle: "DAY 11 · 德國", tag: "town", emoji: "🏘️", bgClass: "town", day: 11, image: "images/gallery/rothenburg.jpg" },
+  { id: 15, title: "慕尼黑新市政廳", subtitle: "DAY 12 · 德國", tag: "town", emoji: "🕰️", bgClass: "town", day: 12, image: "images/gallery/munich-rathaus.jpg" },
+  { id: 16, title: "威斯教堂", subtitle: "DAY 3 · 德國", tag: "castle", emoji: "⛪", bgClass: "castle", day: 3, image: "images/gallery/wieskirche.jpg" },
 ];
 
 /* ═══════ Packing List ═══════ */

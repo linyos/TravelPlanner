@@ -56,6 +56,9 @@ const TimelineModule = (() => {
                 <span>${hotelName}</span>
                 ${stars ? `<span class="timeline-stars">${stars}</span>` : ''}
               </div>
+              <button class="timeline-weather-btn" data-day="${day.day}" data-lat="${day.coordinates.lat}" data-lng="${day.coordinates.lng}" data-date="${day.date}" data-city="${sanitizeHTML(day.route[day.route.length - 1])}">
+                <i class="fas fa-cloud-sun"></i> 查詢當地天氣
+              </button>
               <div class="timeline-day-weather" id="day-weather-${day.day}"></div>
             </div>
           </div>
@@ -86,6 +89,17 @@ const TimelineModule = (() => {
   function bindEvents() {
     if (!container) return;
     container.addEventListener('click', (e) => {
+      // handle weather button
+      const weatherBtn = e.target.closest('.timeline-weather-btn');
+      if (weatherBtn) {
+        e.stopPropagation();
+        const { day, lat, lng, date, city } = weatherBtn.dataset;
+        weatherBtn.disabled = true;
+        weatherBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 查詢中...';
+        WeatherModule.renderDayForecast(`day-weather-${day}`, parseFloat(lat), parseFloat(lng), date, city);
+        setTimeout(() => { weatherBtn.style.display = 'none'; }, 600);
+        return;
+      }
       const card = e.target.closest('.timeline-card');
       if (card) toggleDayDetail(card);
     });

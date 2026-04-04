@@ -192,5 +192,84 @@ const WeatherModule = (() => {
     });
   }
 
-  return { renderWeatherBanner, renderDayWeatherWidget, getTripPhase, getTodaySchedule, getCatSvg, WMO_ICONS };
+  async function fetchDayForecast(lat, lng, dateStr) {
+    const cacheKey = `dayforecast_${lat}_${lng}_${dateStr}`;
+    const cached = cacheGet(cacheKey);
+    if (cached) return cached;
+
+    const url = `${API_BASE}?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lng)}&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode,windspeed_10m_max&start_date=${encodeURIComponent(dateStr)}&end_date=${encodeURIComponent(dateStr)}&timezone=auto`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Weather API error');
+      const data = await res.json();
+      cacheSet(cacheKey, data);
+      return data;
+    } catch (e) {
+      console.warn('Day forecast fetch failed:', e);
+      return null;
+    }
+  }
+
+  function renderDayForecast(containerId, lat, lng, dateStr, cityName) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    container.innerHTML = '<div class="day-weather-loading"><span class="weather-loading-icon">🐾</span> 正在查詢天氣...</div>';
+
+    fetchDayForecast(lat, lng, dateStr).then(data => {
+      if (!data || !data.daily || !data.daily.time || !data.daily.time.length) {
+        container.innerHTML = '<div class="day-weather-error">🐱 暫時無法取得天氣資料</div>';
+        return;
+      }
+
+      const d = data.daily;
+      const code = d.weathercode[0];
+      const icon = WMO_ICONS[code] || '🌤️';
+      const desc = WMO_DESC[code] || '未知';
+      const tMax = d.temperature_2m_max[0];
+      const tMin = d.temperature_2m_min[0];
+      const rain = d.precipitation_probability_max[0];
+      const wind = d.windspeed_10m_max[0];
+      const suggestion = getClothingSuggestion((tMax + tMin) / 2);
+
+      let rainBar = '';
+      if (rain !== null && rain !== undefined) {
+        const rainColor = rain > 60 ? '#5b9bd5' : rain > 30 ? '#a8c8e8' : '#c8e6c9';
+        rainBar = `
+          <div class="dfw-rain">
+            <span class="dfw-rain-label"><i class="fas fa-umbrella"></i> 降雨機率</span>
+            <div class="dfw-rain-bar-bg">
+              <div class="dfw-rain-bar-fill" style="width:${rain}%;background:${rainColor}"></div>
+            </div>
+            <span class="dfw-rain-val">${rain}%</span>
+          </div>`;
+      }
+
+      container.innerHTML = `
+        <div class="day-forecast-card">
+          <div class="dfw-header">
+            <span class="dfw-icon">${icon}</span>
+            <span class="dfw-desc">${sanitizeHTML(desc)}</span>
+          </div>
+          <div class="dfw-temps">
+            <div class="dfw-temp-item">
+              <span class="dfw-temp-label">最高溫</span>
+              <span class="dfw-temp-val dfw-temp-max">${tMax}°C</span>
+            </div>
+            <div class="dfw-temp-divider"></div>
+            <div class="dfw-temp-item">
+              <span class="dfw-temp-label">最低溫</span>
+              <span class="dfw-temp-val dfw-temp-min">${tMin}°C</span>
+            </div>
+          </div>
+          ${rainBar}
+          <div class="dfw-details">
+            <span><i class="fas fa-wind"></i> 最大風速 ${wind} km/h</span>
+          </div>
+          <div class="dfw-suggestion"><i class="fas fa-tshirt"></i> ${sanitizeHTML(suggestion)}</div>
+        </div>`;
+    });
+  }
+
+  return { renderWeatherBanner, renderDayWeatherWidget, renderDayForecast, getTripPhase, getTodaySchedule, getCatSvg, WMO_ICONS };
 })();

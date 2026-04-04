@@ -151,7 +151,7 @@
 }
 
 .timeline-card.expanded .timeline-detail {
-  max-height: 500px;
+  max-height: 800px;
 }
 
 .timeline-summary {
@@ -211,6 +211,170 @@
 
 .timeline-card.expanded .timeline-toggle i {
   transform: rotate(180deg);
+}
+
+/* ─── Weather Button & Forecast Card ─── */
+.timeline-weather-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--space-sm);
+  padding: 6px 16px;
+  border: 1.5px dashed var(--color-accent);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-accent);
+  font-size: 0.8rem;
+  font-family: var(--font-handwrite);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.timeline-weather-btn:hover {
+  background: var(--color-accent);
+  color: white;
+  border-style: solid;
+}
+
+.timeline-weather-btn:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.day-weather-loading {
+  padding: var(--space-sm);
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--color-secondary);
+  font-family: var(--font-handwrite);
+}
+
+.day-weather-error {
+  padding: var(--space-sm);
+  text-align: center;
+  font-size: 0.82rem;
+  color: #999;
+}
+
+.day-forecast-card {
+  margin-top: var(--space-sm);
+  padding: var(--space-md);
+  background: linear-gradient(135deg, #f0f4ff 0%, #fdf8f0 100%);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(160, 120, 90, 0.1);
+}
+
+.dfw-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.dfw-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.dfw-desc {
+  font-family: var(--font-handwrite);
+  font-size: 0.95rem;
+  color: var(--color-dark);
+  font-weight: 600;
+}
+
+.dfw-temps {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-sm);
+}
+
+.dfw-temp-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dfw-temp-label {
+  font-size: 0.7rem;
+  color: #999;
+}
+
+.dfw-temp-val {
+  font-family: var(--font-handwrite);
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.dfw-temp-max { color: #e57373; }
+.dfw-temp-min { color: #64b5f6; }
+
+.dfw-temp-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(160, 120, 90, 0.2);
+}
+
+.dfw-rain {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.dfw-rain-label {
+  font-size: 0.75rem;
+  color: #888;
+  white-space: nowrap;
+  min-width: 72px;
+}
+
+.dfw-rain-label i {
+  margin-right: 3px;
+}
+
+.dfw-rain-bar-bg {
+  flex: 1;
+  height: 8px;
+  background: #e8e8e8;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dfw-rain-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+
+.dfw-rain-val {
+  font-family: var(--font-handwrite);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #5b9bd5;
+  min-width: 36px;
+  text-align: right;
+}
+
+.dfw-details {
+  font-size: 0.78rem;
+  color: #999;
+  margin-bottom: var(--space-xs);
+}
+
+.dfw-details i {
+  margin-right: 3px;
+}
+
+.dfw-suggestion {
+  padding: 5px 10px;
+  margin-top: var(--space-xs);
+  background: var(--color-warm);
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  color: var(--color-secondary);
 }
 
 /* cat decoration along timeline */
