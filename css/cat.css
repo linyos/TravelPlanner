@@ -1,0 +1,141 @@
+/* ═══════ Cat Companion ═══════ */
+.cat-companion {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1500;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.cat-companion:hover {
+  transform: scale(1.08);
+}
+
+.cat-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: var(--shadow-cat);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  overflow: hidden;
+  border: 3px solid var(--color-cat-orange);
+  transition: border-color 0.3s;
+  position: relative;
+}
+
+.cat-avatar img, .cat-avatar svg {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.cat-avatar .cat-emoji {
+  font-size: 2rem;
+}
+
+/* idle animation */
+.cat-companion.idle .cat-avatar {
+  animation: catIdle 3s ease-in-out infinite;
+}
+
+@keyframes catIdle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* wave animation */
+.cat-companion.waving .cat-avatar {
+  animation: catWave 1.5s ease-in-out infinite;
+}
+
+@keyframes catWave {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(10deg); }
+  75% { transform: rotate(-5deg); }
+}
+
+/* sleep animation */
+.cat-companion.sleeping .cat-avatar {
+  animation: catSleep 4s ease-in-out infinite;
+}
+
+@keyframes catSleep {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+}
+
+/* belly flip easter egg */
+.cat-companion.belly-up .cat-avatar {
+  animation: catBellyFlip 0.5s ease forwards;
+}
+
+@keyframes catBellyFlip {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(180deg); }
+}
+
+/* speech bubble */
+.cat-bubble {
+  position: absolute;
+  bottom: 80px;
+  right: 0;
+  background: white;
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  box-shadow: var(--shadow-card);
+  font-size: 0.8rem;
+  color: var(--color-dark);
+  max-width: 200px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+  line-height: 1.4;
+  font-family: var(--font-handwrite);
+}
+
+.cat-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  right: 20px;
+  width: 12px;
+  height: 12px;
+  background: white;
+  transform: rotate(45deg);
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+}
+
+.cat-bubble.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* zzz for sleeping */
+.cat-zzz {
+  position: absolute;
+  top: -10px;
+  right: -5px;
+  font-size: 0.7rem;
+  color: var(--color-secondary);
+  opacity: 0;
+  animation: zzzFloat 2s ease-in-out infinite;
+}
+
+@keyframes zzzFloat {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.8); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translate(10px, -20px) scale(1.2); }
+}
+
+@media (max-width: 768px) {
+  .cat-companion { bottom: 16px; right: 16px; }
+  .cat-avatar { width: 56px; height: 56px; font-size: 1.8rem; }
+  .cat-bubble { max-width: 160px; font-size: 0.75rem; bottom: 65px; }
+}

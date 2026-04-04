@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="德國、瑞士 絕美14日旅遊規劃 — 夢享雙峰、策馬特3100高山飯店、慕尼黑連泊">
+  <meta property="og:title" content="德國、瑞士 絕美14日">
+  <meta property="og:description" content="夢享雙峰、策馬特3100高山飯店、慕尼黑連泊 — 互動旅遊規劃網站">
+  <meta property="og:type" content="website">
+  <title>德國、瑞士 絕美14日 — 旅遊規劃</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/hero.css">
+  <link rel="stylesheet" href="css/weather.css">
+  <link rel="stylesheet" href="css/timeline.css">
+  <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="css/map.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <link rel="stylesheet" href="css/cat.css">
+</head>
+<body>
+
+  <!-- ═══════ Navigation Bar ═══════ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#hero" class="nav-logo">
+        <span class="nav-logo-icon">🐱</span>
+        <span class="nav-logo-text">德瑞14日</span>
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="開啟選單" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#overview" data-section="overview">行程總覽</a></li>
+        <li><a href="#map" data-section="map">互動地圖</a></li>
+        <li><a href="#timeline" data-section="timeline">每日行程</a></li>
+        <li><a href="#gallery" data-section="gallery">精選亮點</a></li>
+        <li><a href="#info" data-section="info">旅遊資訊</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <!-- ═══════ Hero Section ═══════ -->
+    <section id="hero" class="hero-section">
+      <div class="hero-bg"></div>
+      <div class="hero-texture"></div>
+      <div class="hero-content">
+        <p class="hero-subtitle">2026 春季 · 團體編號 DCH14BR26406</p>
+        <h1 class="hero-title">德國、瑞士<br>絕美<span class="accent-text">14</span>日</h1>
+        <p class="hero-tagline">夢享雙峰 · 策馬特3100高山飯店 · 慕尼黑連泊</p>
+        <div class="hero-countdown" id="heroCountdown">
+          <div class="countdown-label">距離出發</div>
+          <div class="countdown-timer">
+            <div class="countdown-item"><span class="countdown-number" id="cdDays">--</span><span class="countdown-unit">天</span></div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-item"><span class="countdown-number" id="cdHours">--</span><span class="countdown-unit">時</span></div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-item"><span class="countdown-number" id="cdMinutes">--</span><span class="countdown-unit">分</span></div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-item"><span class="countdown-number" id="cdSeconds">--</span><span class="countdown-unit">秒</span></div>
+          </div>
+        </div>
+        <a href="#overview" class="hero-cta">開始探索 <i class="fas fa-chevron-down"></i></a>
+      </div>
+      <div class="hero-cat" id="heroCat"></div>
+      <div class="hero-paw-prints">
+        <span class="paw">🐾</span><span class="paw">🐾</span><span class="paw">🐾</span>
+      </div>
+    </section>
+
+    <!-- ═══════ Weather Banner ═══════ -->
+    <section id="weather" class="weather-section">
+      <div class="container">
+        <div class="weather-banner" id="weatherBanner">
+          <div class="weather-loading">
+            <span class="weather-loading-icon">🐾</span>
+            <span>正在查詢天氣...</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════ Trip Overview ═══════ -->
+    <section id="overview" class="overview-section">
+      <div class="container">
+        <h2 class="section-title"><span class="title-deco">✿</span> 行程總覽 <span class="title-deco">✿</span></h2>
+        <div class="overview-grid">
+          <div class="overview-card animate-on-scroll" data-count="14">
+            <div class="overview-icon">📅</div>
+            <div class="overview-number" data-target="14">0</div>
+            <div class="overview-label">天旅程</div>
+          </div>
+          <div class="overview-card animate-on-scroll" data-count="4">
+            <div class="overview-icon">🌍</div>
+            <div class="overview-number" data-target="4">0</div>
+            <div class="overview-label">個國家</div>
+            <div class="overview-flags">🇩🇪 🇨🇭 🇱🇮 🇫🇷</div>
+          </div>
+          <div class="overview-card animate-on-scroll" data-count="12">
+            <div class="overview-icon">🏙️</div>
+            <div class="overview-number" data-target="12">0</div>
+            <div class="overview-label">座城市</div>
+          </div>
+          <div class="overview-card animate-on-scroll" data-count="2">
+            <div class="overview-icon">✈️</div>
+            <div class="overview-number" data-target="2">0</div>
+            <div class="overview-label">段航班</div>
+          </div>
+        </div>
+        <div class="flight-info animate-on-scroll">
+          <div class="flight-card">
+            <div class="flight-direction">去程</div>
+            <div class="flight-detail">
+              <span class="flight-code">BR-71</span>
+              <span class="flight-route">桃園 TPE → 慕尼黑 MUC</span>
+              <span class="flight-time">04/06 23:25 → 04/07 07:35</span>
+            </div>
+          </div>
+          <div class="flight-card">
+            <div class="flight-direction">回程</div>
+            <div class="flight-detail">
+              <span class="flight-code">BR-72</span>
+              <span class="flight-route">慕尼黑 MUC → 桃園 TPE</span>
+              <span class="flight-time">04/18 12:00 → 04/19 06:20</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════ Interactive Map ═══════ -->
+    <section id="map" class="map-section">
+      <div class="container">
+        <h2 class="section-title"><span class="title-deco">✿</span> 互動地圖 <span class="title-deco">✿</span></h2>
+        <div class="map-filters" id="mapFilters">
+          <button class="map-filter active" data-filter="all">全部</button>
+          <button class="map-filter" data-filter="德國">🇩🇪 德國</button>
+          <button class="map-filter" data-filter="瑞士">🇨🇭 瑞士</button>
+          <button class="map-filter" data-filter="列支敦斯登">🇱🇮 列支敦斯登</button>
+          <button class="map-filter" data-filter="法國">🇫🇷 法國</button>
+        </div>
+        <div class="map-wrapper">
+          <div id="tripMap" class="trip-map"></div>
+        </div>
+        <div class="map-legend">
+          <span class="legend-item"><i class="fas fa-plane" style="color:var(--color-flight)"></i> 飛機</span>
+          <span class="legend-item"><i class="fas fa-train" style="color:var(--color-train)"></i> 火車</span>
+          <span class="legend-item"><i class="fas fa-bus" style="color:var(--color-bus)"></i> 巴士</span>
+          <span class="legend-item"><i class="fas fa-ship" style="color:var(--color-boat)"></i> 遊船</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════ Daily Timeline ═══════ -->
+    <section id="timeline" class="timeline-section">
+      <div class="container">
+        <h2 class="section-title"><span class="title-deco">✿</span> 每日行程 <span class="title-deco">✿</span></h2>
+        <div class="timeline" id="timeline-container">
+          <!-- Rendered by timeline.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════ Highlights Gallery ═══════ -->
+    <section id="gallery" class="gallery-section">
+      <div class="container">
+        <h2 class="section-title"><span class="title-deco">✿</span> 精選亮點 <span class="title-deco">✿</span></h2>
+        <div class="gallery-tags" id="galleryTags">
+          <button class="gallery-tag active" data-tag="all">全部</button>
+          <button class="gallery-tag" data-tag="castle">城堡古堡</button>
+          <button class="gallery-tag" data-tag="nature">自然風光</button>
+          <button class="gallery-tag" data-tag="lake">湖泊</button>
+          <button class="gallery-tag" data-tag="train">鐵道</button>
+          <button class="gallery-tag" data-tag="town">小鎮</button>
+        </div>
+        <div class="gallery-scroll" id="galleryScroll">
+          <!-- Rendered by gallery.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════ Travel Info ═══════ -->
+    <section id="info" class="info-section">
+      <div class="container">
+        <h2 class="section-title"><span class="title-deco">✿</span> 旅遊資訊 <span class="title-deco">✿</span></h2>
+        <div class="accordion" id="infoAccordion">
+
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              <span><i class="fas fa-plane-departure"></i> 航班資訊</span>
+              <i class="fas fa-chevron-down accordion-arrow"></i>
+            </button>
+            <div class="accordion-body">
+              <table class="info-table">
+                <thead><tr><th>方向</th><th>航班</th><th>航線</th><th>出發</th><th>抵達</th></tr></thead>
+                <tbody>
+                  <tr><td>去程</td><td>BR-71 長榮航空</td><td>桃園 TPE → 慕尼黑 MUC</td><td>04/06 23:25</td><td>04/07 07:35</td></tr>
+                  <tr><td>回程</td><td>BR-72 長榮航空</td><td>慕尼黑 MUC → 桃園 TPE</td><td>04/18 12:00</td><td>04/19 06:20</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              <span><i class="fas fa-hotel"></i> 住宿一覽</span>
+              <i class="fas fa-chevron-down accordion-arrow"></i>
+            </button>
+            <div class="accordion-body">
+              <table class="info-table">
+                <thead><tr><th>日期</th><th>地點</th><th>飯店</th><th>星級</th></tr></thead>
+                <tbody id="hotelTableBody">
+                  <!-- Rendered by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              <span><i class="fas fa-info-circle"></i> 注意事項</span>
+              <i class="fas fa-chevron-down accordion-arrow"></i>
+            </button>
+            <div class="accordion-body">
+              <div class="info-grid">
+                <div class="info-item"><strong>🛂 簽證</strong><p>台灣護照免簽進入申根國家（90天內）</p></div>
+                <div class="info-item"><strong>💶 貨幣</strong><p>德國、法國使用歐元 (EUR)；瑞士使用瑞士法郎 (CHF)，多數地方也收歐元</p></div>
+                <div class="info-item"><strong>🕐 時差</strong><p>歐洲中部時間 (CET)，台灣 -6 小時（夏令時間 -7 小時）。4月為夏令時間，比台灣慢 6 小時</p></div>
+                <div class="info-item"><strong>🌡️ 氣候</strong><p>4月歐洲春季，氣溫約 5~18°C，高山地區可能有雪，建議洋蔥式穿搭</p></div>
+                <div class="info-item"><strong>🔌 電壓</strong><p>歐洲 220V / 50Hz，圓形雙孔插座（Type C/F），需攜帶轉接頭</p></div>
+                <div class="info-item"><strong>📱 通訊</strong><p>建議購買歐洲 eSIM 或漫遊方案，涵蓋申根區域</p></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              <span><i class="fas fa-suitcase-rolling"></i> 行李清單</span>
+              <i class="fas fa-chevron-down accordion-arrow"></i>
+            </button>
+            <div class="accordion-body">
+              <div class="checklist" id="packingChecklist">
+                <!-- Rendered by app.js -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══════ Footer ═══════ -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 德國、瑞士 絕美14日 — 旅遊規劃網站</p>
+      <button class="back-to-top" id="backToTop" aria-label="回到頂部">
+        <i class="fas fa-chevron-up"></i> 回到頂部
+      </button>
+      <div class="footer-paw">🐾</div>
+    </div>
+  </footer>
+
+  <!-- ═══════ Modal / Lightbox ═══════ -->
+  <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+    <div class="modal-content" id="modalContent" role="dialog" aria-modal="true">
+      <button class="modal-close" id="modalClose" aria-label="關閉">&times;</button>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- ═══════ Cat Companion (floating) ═══════ -->
+  <div class="cat-companion" id="catCompanion" title="點我打招呼！">
+    <div class="cat-bubble" id="catBubble"></div>
+    <div class="cat-avatar" id="catAvatar"></div>
+  </div>
+
+  <!-- ═══════ Scripts ═══════ -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/timeline.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/gallery.js"></script>
+  <script src="js/animation.js"></script>
+  <script src="js/cat.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

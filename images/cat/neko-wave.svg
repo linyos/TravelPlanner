@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <g fill="#E8913A">
+    <ellipse cx="50" cy="60" rx="22" ry="26"/>
+    <circle cx="50" cy="34" r="18"/>
+    <polygon points="34,22 28,6 40,16"/>
+    <polygon points="66,22 72,6 60,16"/>
+  </g>
+  <g fill="#fff">
+    <ellipse cx="50" cy="65" rx="15" ry="12"/>
+  </g>
+  <g fill="#333">
+    <circle cx="43" cy="32" r="2.5"/>
+    <circle cx="57" cy="32" r="2.5"/>
+  </g>
+  <path d="M47,38 Q50,42 53,38" fill="none" stroke="#333" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M48,39 L48,43" fill="none" stroke="#333" stroke-width="1"/>
+  <!-- waving paw -->
+  <g transform="rotate(-20, 72, 50)">
+    <ellipse cx="76" cy="48" rx="6" ry="8" fill="#E8913A"/>
+    <ellipse cx="76" cy="42" rx="4" ry="3" fill="#F5C78A"/>
+  </g>
+  <animateTransform attributeName="transform" type="rotate" from="-5 76 50" to="15 76 50" dur="0.5s" repeatCount="indefinite" additive="sum"/>
+</svg>

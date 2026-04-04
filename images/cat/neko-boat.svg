@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- water -->
+  <path d="M0,75 Q25,70 50,75 Q75,80 100,75 L100,100 L0,100Z" fill="#88b7d5" opacity="0.4"/>
+  <path d="M0,80 Q25,76 50,80 Q75,84 100,80 L100,100 L0,100Z" fill="#6B9BC3" opacity="0.3"/>
+  <!-- boat -->
+  <path d="M20,70 L80,70 L72,82 L28,82 Z" fill="#A0785A"/>
+  <line x1="50" y1="30" x2="50" y2="70" stroke="#8B7355" stroke-width="2"/>
+  <!-- sail -->
+  <path d="M52,32 L52,65 L75,60Z" fill="#fff" stroke="#ddd" stroke-width="0.5"/>
+  <!-- cat on boat -->
+  <g fill="#E8913A">
+    <ellipse cx="40" cy="63" rx="10" ry="10"/>
+    <circle cx="40" cy="52" r="8"/>
+    <polygon points="34,48 31,40 37,46"/>
+    <polygon points="46,48 49,40 43,46"/>
+  </g>
+  <g fill="#333">
+    <circle cx="38" cy="51" r="1.5"/>
+    <circle cx="43" cy="51" r="1.5"/>
+  </g>
+  <path d="M39,54 Q40,56 41,54" fill="none" stroke="#333" stroke-width="0.8" stroke-linecap="round"/>
+</svg>

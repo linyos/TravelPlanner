@@ -1,0 +1,169 @@
+/* ═══════ Cards (景點卡片) ═══════ */
+
+/* tape decoration on images */
+.card-image-wrap {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: var(--space-sm);
+}
+
+.card-image-wrap::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 30%;
+  width: 50px;
+  height: 16px;
+  background: rgba(232, 168, 124, 0.5);
+  transform: rotate(-2deg);
+  z-index: 2;
+  border-radius: 2px;
+}
+
+.card-image-wrap img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  transition: transform 0.4s;
+}
+
+.card-image-wrap:hover img {
+  transform: scale(1.03);
+}
+
+/* placeholder images via gradient */
+.card-image-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  position: relative;
+}
+
+.card-image-placeholder.nature {
+  background: linear-gradient(135deg, #a8d5ba, #7ec8a0, #5ab88a);
+}
+
+.card-image-placeholder.castle {
+  background: linear-gradient(135deg, #d4c5a0, #bfb08a, #a89870);
+}
+
+.card-image-placeholder.lake {
+  background: linear-gradient(135deg, #9ec5e8, #6baed6, #4a90c4);
+}
+
+.card-image-placeholder.train {
+  background: linear-gradient(135deg, #e8c87c, #d4a843, #c09530);
+}
+
+.card-image-placeholder.town {
+  background: linear-gradient(135deg, #e8a87c, #d4926a, #c07858);
+}
+
+.card-image-placeholder.mountain {
+  background: linear-gradient(135deg, #c5d5e0, #9eb8d0, #7a9cb8);
+}
+
+/* gallery card */
+.gallery-card {
+  flex-shrink: 0;
+  width: 280px;
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  scroll-snap-align: start;
+}
+
+.gallery-card:nth-child(odd) { transform: rotate(-0.5deg); }
+.gallery-card:nth-child(even) { transform: rotate(0.5deg); }
+.gallery-card:hover { transform: rotate(0deg) translateY(-4px); box-shadow: var(--shadow-hover); }
+
+.gallery-card-body {
+  padding: var(--space-sm) var(--space-md) var(--space-md);
+}
+
+.gallery-card-title {
+  font-family: var(--font-handwrite);
+  font-size: 0.95rem;
+  color: var(--color-dark);
+  margin-bottom: 2px;
+}
+
+.gallery-card-sub {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.gallery-card-tag {
+  display: inline-block;
+  padding: 1px 8px;
+  background: var(--color-warm);
+  border-radius: var(--radius-pill);
+  font-size: 0.7rem;
+  color: var(--color-secondary);
+  margin-top: var(--space-xs);
+}
+
+/* ─── Gallery Section ─── */
+.gallery-section {
+  background: linear-gradient(180deg, var(--color-bg), var(--color-warm) 80%, var(--color-bg));
+}
+
+.gallery-tags {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.gallery-tag {
+  padding: 0.4em 1em;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  color: var(--color-dark);
+  background: white;
+  border: 1px solid rgba(160,120,90,0.15);
+  transition: all 0.3s;
+}
+
+.gallery-tag:hover, .gallery-tag.active {
+  background: var(--color-secondary);
+  color: white;
+  border-color: var(--color-secondary);
+}
+
+.gallery-scroll {
+  display: flex;
+  gap: var(--space-lg);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: var(--space-md) var(--space-sm) var(--space-lg);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-secondary) transparent;
+}
+
+.gallery-scroll::-webkit-scrollbar { height: 6px; }
+.gallery-scroll::-webkit-scrollbar-track { background: transparent; }
+.gallery-scroll::-webkit-scrollbar-thumb { background: var(--color-secondary); border-radius: 3px; }
+
+.gallery-empty {
+  width: 100%;
+  text-align: center;
+  padding: var(--space-xl);
+  color: #999;
+  font-family: var(--font-handwrite);
+}
+
+@media (max-width: 768px) {
+  .gallery-card { width: 240px; }
+}
