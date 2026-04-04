@@ -6,6 +6,12 @@ const TimelineModule = (() => {
     return getTransportIcon(type);
   }
 
+  function getDayThumbnail(dayNum) {
+    if (typeof GALLERY_DATA === 'undefined') return null;
+    const match = GALLERY_DATA.find(g => g.day === dayNum && g.image);
+    return match || null;
+  }
+
   function renderTimeline(days) {
     container = document.getElementById('timeline-container');
     if (!container) return;
@@ -41,7 +47,13 @@ const TimelineModule = (() => {
           <div class="timeline-card ${expandedClass}" data-day-index="${idx}">
             <div class="timeline-card-header">
               <span class="timeline-title">${sanitizeHTML(day.title)}</span>
-              <span class="timeline-transport" title="${sanitizeHTML(getTransportLabel(day.transport))}">${getTransportEmoji(day.transport)}</span>
+              ${(() => {
+                const thumb = getDayThumbnail(day.day);
+                if (thumb) {
+                  return `<span class="timeline-thumb" title="${sanitizeHTML(thumb.title)}"><img src="${sanitizeHTML(thumb.image)}" alt="${sanitizeHTML(thumb.title)}" data-fallback="${getTransportEmoji(day.transport)}" data-fallback-title="${sanitizeHTML(getTransportLabel(day.transport))}"></span>`;
+                }
+                return `<span class="timeline-transport" title="${sanitizeHTML(getTransportLabel(day.transport))}">${getTransportEmoji(day.transport)}</span>`;
+              })()}
             </div>
             <div class="timeline-date">${sanitizeHTML(day.date)} (${sanitizeHTML(day.weekday)})</div>
             <div class="timeline-toggle">
@@ -66,6 +78,20 @@ const TimelineModule = (() => {
     });
 
     container.innerHTML = html;
+
+    // thumbnail fallback: replace with transport emoji on error
+    container.querySelectorAll('.timeline-thumb img').forEach(img => {
+      img.addEventListener('error', () => {
+        const emoji = img.dataset.fallback;
+        const title = img.dataset.fallbackTitle;
+        const span = document.createElement('span');
+        span.className = 'timeline-transport';
+        span.title = title;
+        span.textContent = emoji;
+        img.closest('.timeline-thumb').replaceWith(span);
+      }, { once: true });
+    });
+
     bindEvents();
 
     // scroll to current day
