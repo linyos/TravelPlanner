@@ -3,7 +3,6 @@ const TRIP_DATA = {
   meta: {
     title: "德國、瑞士 絕美14日",
     subtitle: "夢享雙峰、策馬特3100高山飯店、慕尼黑連泊",
-    groupId: "DCH14BR26406",
     departureDate: "2026-04-06T20:25:00+08:00",
     returnDate: "2026-04-19T06:20:00+08:00",
     meetingPoint: "桃園國際機場第二航廈長榮航空櫃台",
