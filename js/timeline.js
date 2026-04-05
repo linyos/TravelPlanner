@@ -12,6 +12,42 @@ const TimelineModule = (() => {
     return match || null;
   }
 
+  function hasCityDetail(dayNum) {
+    return typeof CITY_DETAILS !== 'undefined' && !!CITY_DETAILS[dayNum];
+  }
+
+  function buildCityDetailHTML(dayNum) {
+    const detail = CITY_DETAILS[dayNum];
+    if (!detail) return '';
+    let html = `<div class="city-detail-modal">`;
+    html += `<div class="city-detail-header">`;
+    html += `<span class="city-detail-emoji">${sanitizeHTML(detail.heroEmoji)}</span>`;
+    html += `<h2 class="city-detail-title">${sanitizeHTML(detail.city)} <small>${sanitizeHTML(detail.cityEN)}</small></h2>`;
+    html += `</div>`;
+    html += `<p class="city-detail-intro">${sanitizeHTML(detail.intro)}</p>`;
+
+    detail.sections.forEach(section => {
+      html += `<div class="city-detail-section">`;
+      html += `<h3 class="city-detail-section-title"><span>${sanitizeHTML(section.icon)}</span> ${sanitizeHTML(section.title)}</h3>`;
+      html += `<div class="city-detail-items">`;
+      section.items.forEach(item => {
+        html += `<div class="city-detail-item">`;
+        html += `<h4 class="city-detail-item-name">${sanitizeHTML(item.name)}</h4>`;
+        html += `<p class="city-detail-item-desc">${sanitizeHTML(item.desc)}</p>`;
+        html += `</div>`;
+      });
+      html += `</div></div>`;
+    });
+
+    html += `</div>`;
+    return html;
+  }
+
+  function openCityDetail(dayNum) {
+    const html = buildCityDetailHTML(dayNum);
+    if (html) ModalModule.openModal(html, false);
+  }
+
   function renderTimeline(days) {
     container = document.getElementById('timeline-container');
     if (!container) return;
@@ -50,8 +86,12 @@ const TimelineModule = (() => {
               <span class="timeline-title">${sanitizeHTML(day.title)}</span>
               ${(() => {
                 const thumb = getDayThumbnail(day.day);
+                const hasDetail = hasCityDetail(day.day);
                 if (thumb) {
-                  return `<span class="timeline-thumb" title="${sanitizeHTML(thumb.title)}"><img src="${sanitizeHTML(thumb.image)}" alt="${sanitizeHTML(thumb.title)}" data-fallback="${getTransportEmoji(day.transport)}" data-fallback-title="${sanitizeHTML(getTransportLabel(day.transport))}"></span>`;
+                  const detailClass = hasDetail ? ' has-city-detail' : '';
+                  const detailAttr = hasDetail ? ` data-city-detail="${day.day}"` : '';
+                  const detailHint = hasDetail ? '<span class="thumb-detail-hint"><i class="fas fa-search-plus"></i></span>' : '';
+                  return `<span class="timeline-thumb${detailClass}" title="${sanitizeHTML(thumb.title)}"${detailAttr}><img src="${sanitizeHTML(thumb.image)}" alt="${sanitizeHTML(thumb.title)}" data-fallback="${getTransportEmoji(day.transport)}" data-fallback-title="${sanitizeHTML(getTransportLabel(day.transport))}">${detailHint}</span>`;
                 }
                 return `<span class="timeline-transport" title="${sanitizeHTML(getTransportLabel(day.transport))}">${getTransportEmoji(day.transport)}</span>`;
               })()}
@@ -116,6 +156,14 @@ const TimelineModule = (() => {
   function bindEvents() {
     if (!container) return;
     container.addEventListener('click', (e) => {
+      // handle city detail thumbnail click
+      const thumbDetail = e.target.closest('.timeline-thumb[data-city-detail]');
+      if (thumbDetail) {
+        e.stopPropagation();
+        const dayNum = parseInt(thumbDetail.dataset.cityDetail, 10);
+        openCityDetail(dayNum);
+        return;
+      }
       // handle weather button
       const weatherBtn = e.target.closest('.timeline-weather-btn');
       if (weatherBtn) {
