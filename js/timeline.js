@@ -69,7 +69,7 @@ const TimelineModule = (() => {
                 <span>${hotelName}</span>
                 ${stars ? `<span class="timeline-stars">${stars}</span>` : ''}
               </div>
-              <button class="timeline-weather-btn" data-day="${day.day}" data-lat="${day.coordinates.lat}" data-lng="${day.coordinates.lng}" data-date="${day.date}" data-city="${sanitizeHTML(day.route[day.route.length - 1])}">
+              <button class="timeline-weather-btn" data-day="${day.day}" data-lat="${day.coordinates.lat}" data-lng="${day.coordinates.lng}" data-date="${day.date}" data-day-idx="${idx}">
                 <i class="fas fa-cloud-sun"></i> 查詢當地天氣
               </button>
               <div class="timeline-day-weather" id="day-weather-${day.day}"></div>
@@ -120,7 +120,10 @@ const TimelineModule = (() => {
       const weatherBtn = e.target.closest('.timeline-weather-btn');
       if (weatherBtn) {
         e.stopPropagation();
-        const { day, lat, lng, date, city } = weatherBtn.dataset;
+        const { day, lat, lng, date, dayIdx } = weatherBtn.dataset;
+        // Fix #6: look up city name from TRIP_DATA to avoid attribute-injection risk
+        const dayData = TRIP_DATA.days[parseInt(dayIdx, 10)];
+        const city = dayData ? dayData.route[dayData.route.length - 1] : '';
         weatherBtn.disabled = true;
         weatherBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 查詢中...';
         WeatherModule.renderDayForecast(`day-weather-${day}`, parseFloat(lat), parseFloat(lng), date, city);

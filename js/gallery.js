@@ -2,6 +2,7 @@
 const GalleryModule = (() => {
   let currentIndex = 0;
   let filteredItems = [];
+  let activeKeyHandler = null; // Fix #7: track handler to prevent accumulation
 
   function makePlaceholderHTML(item, extraStyle) {
     const style = extraStyle ? ` style="${extraStyle}"` : '';
@@ -121,22 +122,29 @@ const GalleryModule = (() => {
     if (prev) prev.addEventListener('click', (e) => { e.stopPropagation(); navigate(-1); });
     if (next) next.addEventListener('click', (e) => { e.stopPropagation(); navigate(1); });
 
-    // keyboard
+    // keyboard — remove previous handler before adding new one (prevents accumulation)
+    if (activeKeyHandler) {
+      document.removeEventListener('keydown', activeKeyHandler);
+    }
     const keyHandler = (e) => {
       if (e.key === 'ArrowLeft') navigate(-1);
       if (e.key === 'ArrowRight') navigate(1);
     };
+    activeKeyHandler = keyHandler;
     document.addEventListener('keydown', keyHandler);
 
     // cleanup on close
-    const obs = new MutationObserver(() => {
-      const overlay = document.getElementById('modalOverlay');
-      if (overlay && !overlay.classList.contains('active')) {
-        document.removeEventListener('keydown', keyHandler);
-        obs.disconnect();
-      }
-    });
-    obs.observe(document.getElementById('modalOverlay'), { attributes: true, attributeFilter: ['class'] });
+    const modalOverlay = document.getElementById('modalOverlay');
+    if (modalOverlay) {
+      const obs = new MutationObserver(() => {
+        if (!modalOverlay.classList.contains('active')) {
+          document.removeEventListener('keydown', activeKeyHandler);
+          activeKeyHandler = null;
+          obs.disconnect();
+        }
+      });
+      obs.observe(modalOverlay, { attributes: true, attributeFilter: ['class'] });
+    }
   }
 
   function navigate(dir) {

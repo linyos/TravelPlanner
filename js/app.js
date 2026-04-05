@@ -4,30 +4,31 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ── Navbar ── */
   const navbar = document.getElementById('navbar');
   const hamburger = document.getElementById('hamburger');
-  const navMenu = document.getElementById('navMenu');
+  const navMenu = document.getElementById('navLinks'); // Fix #1: was 'navMenu', HTML id is 'navLinks'
 
   if (hamburger && navMenu) {
     hamburger.addEventListener('click', () => {
-      navMenu.classList.toggle('active');
+      navMenu.classList.toggle('open'); // Fix #2: CSS expects 'open', not 'active'
       hamburger.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', navMenu.classList.contains('active'));
+      hamburger.setAttribute('aria-expanded', navMenu.classList.contains('open'));
     });
   }
 
   // Active link highlight + smooth scroll
-  const navLinks = document.querySelectorAll('.nav-link');
+  const navLinks = document.querySelectorAll('.nav-links a'); // Fix #3: <a> tags have no .nav-link class
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       const target = document.querySelector(link.getAttribute('href'));
       if (target) target.scrollIntoView({ behavior: 'smooth' });
-      navMenu.classList.remove('active');
-      hamburger.classList.remove('active');
+      if (navMenu) navMenu.classList.remove('open'); // Fix #4: null guard + correct class
+      if (hamburger) hamburger.classList.remove('active');
     });
   });
 
   // Navbar scroll effect
   const onScroll = throttle(() => {
+    if (!navbar) return; // Fix #5: null guard before classList use
     if (window.scrollY > 50) navbar.classList.add('scrolled');
     else navbar.classList.remove('scrolled');
 
