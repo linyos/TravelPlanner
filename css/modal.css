@@ -2,7 +2,7 @@
 .modal-overlay {
   position: fixed; inset: 0;
   background: rgba(61, 50, 41, 0.75);
-  z-index: 2000;
+  z-index: var(--z-modal);
   display: flex; align-items: center; justify-content: center;
   opacity: 0; visibility: hidden;
   transition: opacity 0.3s, visibility 0.3s;

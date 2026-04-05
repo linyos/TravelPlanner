@@ -42,6 +42,11 @@
   --shadow-card:  0 2px 12px rgba(160, 120, 90, 0.10);
   --shadow-hover: 0 8px 28px rgba(160, 120, 90, 0.18);
   --shadow-cat:   0 4px 16px rgba(232, 168, 124, 0.25);
+
+  /* Stacking layers — keep all z-index values here */
+  --z-navbar:  100;
+  --z-cat:    1500;
+  --z-modal:  2000;
 }
 
 /* ─── Reset ─── */
@@ -93,7 +98,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 /* ─── Navbar ─── */
 .navbar {
-  position: sticky; top: 0; z-index: 1000;
+  position: sticky; top: 0; z-index: var(--z-navbar);
   background: rgba(253, 248, 240, 0.85);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(160, 120, 90, 0.1);

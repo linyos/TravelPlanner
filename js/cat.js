@@ -31,7 +31,7 @@ const CatModule = (() => {
     if (!companion) return;
 
     renderAvatar('wave');
-    companion.classList.add('waving');
+    companion.dataset.pose = 'wave';
 
     companion.addEventListener('click', onCatClick);
     companion.addEventListener('mouseenter', () => resetIdle());
@@ -59,17 +59,21 @@ const CatModule = (() => {
   function renderAvatar(pose) {
     if (!avatar) return;
     const imgData = IMAGE_POSES[pose];
+    const ALT_TEXT = {
+      wave:     '旅伴小橘揮手歡迎',
+      walk:     '旅伴小橘散步中',
+      sun:      '旅伴小橘曬太陽',
+      umbrella: '旅伴小橘撐傘',
+    };
     if (imgData) {
-      // 優先載入 jpg，失敗則 svg，再失敗則 emoji
       const img = new Image();
       img.className = 'cat-img';
-      img.alt = pose;
+      img.alt = ALT_TEXT[pose] || '旅伴小橘';
       img.onload = () => { avatar.innerHTML = ''; avatar.appendChild(img); };
       img.onerror = () => {
-        // jpg 失敗，嘗試 svg
         const svgImg = new Image();
         svgImg.className = 'cat-img';
-        svgImg.alt = pose;
+        svgImg.alt = ALT_TEXT[pose] || '旅伴小橘';
         svgImg.onload = () => { avatar.innerHTML = ''; avatar.appendChild(svgImg); };
         svgImg.onerror = () => { avatar.innerHTML = `<span class="cat-emoji">${imgData.emoji}</span>`; };
         svgImg.src = imgData.svg;
@@ -85,11 +89,9 @@ const CatModule = (() => {
     if (!avatar) return;
     currentPose = pose;
     renderAvatar(pose);
-
-    companion.classList.remove('waving', 'idle', 'sleeping', 'belly-up');
-    if (pose === 'wave') companion.classList.add('waving');
-    else if (pose === 'sleep') companion.classList.add('sleeping');
-    else companion.classList.add('idle');
+    // use data-pose attribute for CSS animation state (cleaner than multi-class toggle)
+    companion.dataset.pose = pose === 'wave' ? 'wave' : pose === 'sleep' ? 'sleep' : 'idle';
+    companion.classList.remove('belly-up'); // clean up temporary easter egg state
   }
 
   function onCatClick() {
@@ -126,12 +128,14 @@ const CatModule = (() => {
 
   function resetIdle() {
     clearTimeout(idleTimer);
-    companion.classList.remove('sleeping');
+    // wake from sleep immediately if active
+    if (companion.dataset.pose === 'sleep') {
+      companion.dataset.pose = 'idle';
+    }
 
     idleTimer = setTimeout(() => {
       // go to sleep after 30s idle
       setPose('sleep');
-      companion.classList.add('sleeping');
 
       // add zzz
       let zzz = companion.querySelector('.cat-zzz');

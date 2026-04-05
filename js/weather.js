@@ -124,6 +124,10 @@ const WeatherModule = (() => {
         const icon = WMO_ICONS[cw.weathercode] || '🌤️';
         const desc = WMO_DESC[cw.weathercode] || '未知';
         container.querySelector('p').textContent = `慕尼黑目前 ${icon} ${cw.temperature}°C ${desc}`;
+      }).catch(err => {
+        console.warn('Weather preview failed:', err);
+        const p = container.querySelector('p');
+        if (p) p.textContent = '天氣預覽暫時無法取得';
       });
       return;
     }
@@ -183,6 +187,9 @@ const WeatherModule = (() => {
 
       // dispatch event for cat module
       document.dispatchEvent(new CustomEvent('weatherLoaded', { detail: { catPose, weatherCode: cw.weathercode } }));
+    }).catch(err => {
+      console.warn('Weather banner render failed:', err);
+      container.innerHTML = '<div class="weather-pre-trip"><div class="pre-trip-label">' + catImgTag('neko-umbrella', 'weather-cat-icon') + ' 天氣查詢失敗，但不影響好心情！</div></div>';
     });
   }
 
@@ -195,6 +202,8 @@ const WeatherModule = (() => {
       widget.className = 'day-weather-widget';
       widget.innerHTML = `<span class="dw-icon">${icon}</span><span class="dw-temp">${cw.temperature}°C</span>`;
       dayEl.appendChild(widget);
+    }).catch(err => {
+      console.warn('Day weather widget failed:', err);
     });
   }
 
@@ -274,6 +283,9 @@ const WeatherModule = (() => {
           </div>
           <div class="dfw-suggestion"><i class="fas fa-tshirt"></i> ${sanitizeHTML(suggestion)}</div>
         </div>`;
+    }).catch(err => {
+      console.warn('Day forecast render failed:', err);
+      container.innerHTML = '<div class="day-weather-error">' + catImgTag('neko-umbrella', 'weather-cat-icon') + ' 暫時無法取得天氣資料</div>';
     });
   }
 

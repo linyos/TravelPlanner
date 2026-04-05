@@ -53,9 +53,15 @@ document.addEventListener('DOMContentLoaded', () => {
     seconds: document.getElementById('countSeconds'),
   };
 
+  let countdownInterval = null;
+
   function updateCountdown() {
     const cd = getCountdown(TRIP_DATA.meta.departureDate);
     if (cd.expired) {
+      if (countdownInterval !== null) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
       if (countdownEls.days) countdownEls.days.textContent = '0';
       if (countdownEls.hours) countdownEls.hours.textContent = '0';
       if (countdownEls.minutes) countdownEls.minutes.textContent = '0';
@@ -70,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (countdownEls.seconds) countdownEls.seconds.textContent = cd.seconds;
   }
   updateCountdown();
-  setInterval(updateCountdown, 1000);
+  countdownInterval = setInterval(updateCountdown, 1000);
 
   /* ── Weather ── */
   const weatherBanner = document.getElementById('weatherBanner');
@@ -97,9 +103,16 @@ document.addEventListener('DOMContentLoaded', () => {
     header.addEventListener('click', () => {
       const item = header.parentElement;
       const wasOpen = item.classList.contains('open');
-      // close all
-      document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
-      if (!wasOpen) item.classList.add('open');
+      // close all, reset aria
+      document.querySelectorAll('.accordion-item').forEach(i => {
+        i.classList.remove('open');
+        const h = i.querySelector('.accordion-header');
+        if (h) h.setAttribute('aria-expanded', 'false');
+      });
+      if (!wasOpen) {
+        item.classList.add('open');
+        header.setAttribute('aria-expanded', 'true');
+      }
     });
   });
 
@@ -124,10 +137,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (checklistEl) {
     const saved = getFromLocal('packingChecked') || {};
     let html = '';
-    PACKING_LIST.forEach(cat => {
+    PACKING_LIST.forEach((cat, catIdx) => {
       html += `<div class="checklist-category"><h4>${sanitizeHTML(cat.category)}</h4><div class="checklist-grid">`;
-      cat.items.forEach(item => {
-        const key = `${cat.category}_${item}`;
+      cat.items.forEach((item, itemIdx) => {
+        const key = `${catIdx}_${itemIdx}`; // index-based key avoids underscore collision
         const checked = saved[key] ? 'checked' : '';
         html += `<label class="checklist-item">
           <input type="checkbox" data-key="${sanitizeHTML(key)}" ${checked}>
@@ -145,24 +158,6 @@ document.addEventListener('DOMContentLoaded', () => {
         saveToLocal('packingChecked', current);
       }
     });
-  }
-
-  /* ── Flight Info ── */
-  const flightCards = document.getElementById('flightCards');
-  if (flightCards) {
-    flightCards.innerHTML = TRIP_DATA.flights.map(f => `
-      <div class="flight-card">
-        <div class="flight-label">${f.direction === 'outbound' ? '✈️ 去程' : '✈️ 回程'}</div>
-        <div class="flight-route">
-          <span class="flight-city">${sanitizeHTML(f.from)}</span>
-          <span class="flight-arrow">→</span>
-          <span class="flight-city">${sanitizeHTML(f.to)}</span>
-        </div>
-        <div class="flight-detail">
-          <span>${sanitizeHTML(f.flightNo)}</span>
-          <span>${sanitizeHTML(f.date)} ${sanitizeHTML(f.time)}</span>
-        </div>
-      </div>`).join('');
   }
 
   /* ── Back to Top ── */

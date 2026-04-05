@@ -3,7 +3,7 @@
   position: fixed;
   bottom: 24px;
   right: 24px;
-  z-index: 1500;
+  z-index: var(--z-cat);
   cursor: pointer;
   transition: transform 0.3s;
 }
@@ -46,7 +46,7 @@
 }
 
 /* idle animation */
-.cat-companion.idle .cat-avatar {
+.cat-companion[data-pose="idle"] .cat-avatar {
   animation: catIdle 3s ease-in-out infinite;
 }
 
@@ -56,7 +56,7 @@
 }
 
 /* wave animation */
-.cat-companion.waving .cat-avatar {
+.cat-companion[data-pose="wave"] .cat-avatar {
   animation: catWave 1.5s ease-in-out infinite;
 }
 
@@ -67,7 +67,7 @@
 }
 
 /* sleep animation */
-.cat-companion.sleeping .cat-avatar {
+.cat-companion[data-pose="sleep"] .cat-avatar {
   animation: catSleep 4s ease-in-out infinite;
 }
 

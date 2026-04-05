@@ -2,6 +2,7 @@
 const ModalModule = (() => {
   let overlay, content, body, closeBtn;
   let previousFocus = null;
+  let closeCallback = null;
 
   function init() {
     overlay = document.getElementById('modalOverlay');
@@ -19,10 +20,16 @@ const ModalModule = (() => {
     });
   }
 
-  function openModal(htmlContent, isLightbox) {
+  function openModal(htmlContent, isLightbox, onClose) {
     if (!overlay) return;
+    closeCallback = onClose || null;
     previousFocus = document.activeElement;
-    body.innerHTML = htmlContent;
+    try {
+      body.innerHTML = htmlContent;
+    } catch (e) {
+      console.error('Modal content error:', e);
+      body.innerHTML = '<div style="padding:2rem;text-align:center;">內容載入失敗</div>';
+    }
     overlay.classList.add('active');
     if (isLightbox) overlay.classList.add('lightbox');
     else overlay.classList.remove('lightbox');
@@ -41,6 +48,7 @@ const ModalModule = (() => {
     document.body.classList.remove('modal-open');
     body.innerHTML = '';
     if (previousFocus) previousFocus.focus();
+    if (closeCallback) { closeCallback(); closeCallback = null; }
   }
 
   return { init, openModal, closeModal };

@@ -168,3 +168,21 @@
 @media (max-width: 768px) {
   .gallery-card { width: 240px; }
 }
+
+/* Lightbox media dimensions — shared by image and placeholder */
+.lightbox-media {
+  width: 70vw;
+  max-width: 600px;
+  aspect-ratio: 16 / 10;
+  margin: 0 auto;
+  border-radius: var(--radius-md);
+  display: block;
+}
+
+img.lightbox-media {
+  object-fit: cover;
+}
+
+.lightbox-media.card-image-placeholder {
+  font-size: 5rem;
+}

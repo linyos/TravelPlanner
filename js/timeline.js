@@ -69,11 +69,12 @@ const TimelineModule = (() => {
           '</div>';
       }
 
-      // cat decoration every 3 days
+      // cat decoration every N days
+      const CAT_DECORATION_INTERVAL = 3;
       let catDeco = '';
-      if (idx % 3 === 1 && idx < days.length - 1) {
+      if (idx % CAT_DECORATION_INTERVAL === 1 && idx < days.length - 1) {
         const catNames = ['neko-wave', 'neko-camera', 'neko-sun', 'neko-walk', 'neko-umbrella'];
-        const name = catNames[Math.floor(idx / 3) % catNames.length];
+        const name = catNames[Math.floor(idx / CAT_DECORATION_INTERVAL) % catNames.length];
         catDeco = `<div class="timeline-cat">${catImgTag(name, 'timeline-cat-img', '旅伴小橘')}</div>`;
       }
 
@@ -123,13 +124,13 @@ const TimelineModule = (() => {
     // thumbnail fallback: replace with transport emoji on error
     container.querySelectorAll('.timeline-thumb img').forEach(img => {
       img.addEventListener('error', () => {
-        const emoji = img.dataset.fallback;
-        const title = img.dataset.fallbackTitle;
+        const thumb = img.closest('.timeline-thumb');
+        if (!thumb) return; // parent may have already been replaced
         const span = document.createElement('span');
         span.className = 'timeline-transport';
-        span.title = title;
-        span.textContent = emoji;
-        img.closest('.timeline-thumb').replaceWith(span);
+        span.title = img.dataset.fallbackTitle || '';
+        span.textContent = img.dataset.fallback || '';
+        thumb.replaceWith(span);
       }, { once: true });
     });
 
@@ -168,12 +169,14 @@ const TimelineModule = (() => {
       const weatherBtn = e.target.closest('.timeline-weather-btn');
       if (weatherBtn) {
         e.stopPropagation();
+        const container = document.getElementById(`day-weather-${weatherBtn.dataset.day}`);
+        if (weatherBtn.disabled || (container && container.dataset.loading === 'true')) return;
         const { day, lat, lng, date, dayIdx } = weatherBtn.dataset;
-        // Fix #6: look up city name from TRIP_DATA to avoid attribute-injection risk
         const dayData = TRIP_DATA.days[parseInt(dayIdx, 10)];
         const city = dayData ? dayData.route[dayData.route.length - 1] : '';
         weatherBtn.disabled = true;
         weatherBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 查詢中...';
+        if (container) container.dataset.loading = 'true';
         WeatherModule.renderDayForecast(`day-weather-${day}`, parseFloat(lat), parseFloat(lng), date, city);
         setTimeout(() => { weatherBtn.style.display = 'none'; }, 600);
         return;

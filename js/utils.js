@@ -44,12 +44,22 @@ function sanitizeHTML(str) {
   return temp.innerHTML;
 }
 
-/** 產生貓咪圖片 HTML：優先載入 .jpg，失敗則 fallback 到 .svg */
+/** 產生貓咪圖片 HTML：優先載入 .jpg，失敗則 fallback 到 .svg（透過 data-fallback-src 避免 inline JS）*/
 function catImgTag(name, cssClass, alt) {
-  const jpg = `images/cat/${name}.jpg`;
-  const svg = `images/cat/${name}.svg`;
-  return `<img class="${cssClass}" src="${jpg}" alt="${alt || ''}" onerror="this.onerror=null;this.src='${svg}'">`;
+  const safeName = sanitizeHTML(name);
+  const safeClass = sanitizeHTML(cssClass || '');
+  const safeAlt = sanitizeHTML(alt || '');
+  return `<img class="${safeClass}" src="images/cat/${safeName}.jpg" alt="${safeAlt}" data-fallback-src="images/cat/${safeName}.svg">`;
 }
+
+/** 全域貓咪圖片 fallback 處理（capture phase，取代 inline onerror）
+ *  注意：timeline img 使用 data-fallback（emoji 文字），本處理器只處理 data-fallback-src（URL）*/
+document.addEventListener('error', (e) => {
+  if (e.target.tagName === 'IMG' && e.target.dataset.fallbackSrc) {
+    e.target.src = e.target.dataset.fallbackSrc;
+    delete e.target.dataset.fallbackSrc; // 防止 svg 也失敗時無限觸發
+  }
+}, true);
 
 function saveToLocal(key, value) {
   try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* quota exceeded */ }

@@ -34,6 +34,8 @@ const MapModule = (() => {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© <a href="https://www.openstreetmap.org/copyright" rel="noopener noreferrer" target="_blank">OpenStreetMap</a>',
       maxZoom: 18,
+    }).on('tileerror', () => {
+      console.warn('地圖圖磚載入失敗，請檢查網路連線');
     }).addTo(map);
 
     addMarkers(TRIP_DATA.days);
@@ -72,18 +74,13 @@ const MapModule = (() => {
       markers.push(marker);
     });
 
-    // popup click -> scroll to timeline
-    map.on('popupopen', (e) => {
-      const popup = e.popup;
-      const el = popup.getElement();
-      if (!el) return;
-      const action = el.querySelector('.map-popup-action');
-      if (action) {
-        action.addEventListener('click', () => {
-          const dayNum = parseInt(action.dataset.gotoDay, 10);
-          TimelineModule.scrollToDay(dayNum);
-        });
-      }
+    // popup click -> scroll to timeline (event delegation on popup pane, not per popup)
+    const popupPane = map.getPanes().popupPane;
+    popupPane.addEventListener('click', (e) => {
+      const action = e.target.closest('.map-popup-action');
+      if (!action) return;
+      const dayNum = parseInt(action.dataset.gotoDay, 10);
+      if (!isNaN(dayNum)) TimelineModule.scrollToDay(dayNum);
     });
   }
 

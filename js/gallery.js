@@ -2,7 +2,9 @@
 const GalleryModule = (() => {
   let currentIndex = 0;
   let filteredItems = [];
-  let activeKeyHandler = null; // Fix #7: track handler to prevent accumulation
+  let activeKeyHandler = null;
+  let _allItems = [];        // full unfiltered list, set once on first render
+  let _listenersReady = false; // guard: bind scroll + tag listeners only once
 
   function makePlaceholderHTML(item, extraStyle) {
     const style = extraStyle ? ` style="${extraStyle}"` : '';
@@ -18,8 +20,7 @@ const GalleryModule = (() => {
 
     if (source === 'lightbox') {
       const placeholder = document.createElement('div');
-      placeholder.className = `card-image-placeholder ${item.bgClass}`;
-      placeholder.style.cssText = 'width:70vw;max-width:600px;aspect-ratio:16/10;margin:0 auto;border-radius:12px;font-size:5rem;';
+      placeholder.className = `card-image-placeholder lightbox-media ${item.bgClass}`;
       placeholder.textContent = item.emoji;
       img.replaceWith(placeholder);
     } else {
@@ -32,6 +33,23 @@ const GalleryModule = (() => {
     if (!scroll) return;
 
     filteredItems = items;
+
+    // Bind scroll click and tag filters exactly once (first call only)
+    if (!_listenersReady) {
+      _allItems = items;
+      _listenersReady = true;
+
+      scroll.addEventListener('click', (e) => {
+        const card = e.target.closest('.gallery-card');
+        if (card) {
+          const idx = parseInt(card.dataset.index, 10);
+          openLightbox(idx);
+        }
+      });
+
+      bindTagFilters();
+    }
+
     if (!items.length) {
       scroll.innerHTML = '<div class="gallery-empty">🐱 目前還沒有照片，旅程結束後再來看看吧！</div>';
       return;
@@ -58,19 +76,9 @@ const GalleryModule = (() => {
     scroll.querySelectorAll('img').forEach(img => {
       img.addEventListener('error', () => handleImgError(img), { once: true });
     });
-
-    scroll.addEventListener('click', (e) => {
-      const card = e.target.closest('.gallery-card');
-      if (card) {
-        const idx = parseInt(card.dataset.index, 10);
-        openLightbox(idx);
-      }
-    });
-
-    bindTagFilters(items);
   }
 
-  function bindTagFilters(allItems) {
+  function bindTagFilters() {
     const tagsEl = document.getElementById('galleryTags');
     if (!tagsEl) return;
 
@@ -82,7 +90,7 @@ const GalleryModule = (() => {
       btn.classList.add('active');
 
       const tag = btn.dataset.tag;
-      const filtered = tag === 'all' ? allItems : allItems.filter(item => item.tag === tag);
+      const filtered = tag === 'all' ? _allItems : _allItems.filter(item => item.tag === tag);
       renderGallery(filtered);
     });
   }
@@ -92,12 +100,11 @@ const GalleryModule = (() => {
     const item = filteredItems[index];
     if (!item) return;
 
-    const lightboxStyle = 'width:70vw;max-width:600px;aspect-ratio:16/10;margin:0 auto;border-radius:12px;';
     let imageHTML;
     if (item.image) {
-      imageHTML = `<img src="${sanitizeHTML(item.image)}" alt="${sanitizeHTML(item.title)}" style="${lightboxStyle}object-fit:cover;" data-item-index="${index}" data-source="lightbox">`;
+      imageHTML = `<img src="${sanitizeHTML(item.image)}" alt="${sanitizeHTML(item.title)}" class="lightbox-media" data-item-index="${index}" data-source="lightbox">`;
     } else {
-      imageHTML = makePlaceholderHTML(item, `${lightboxStyle}font-size:5rem;`);
+      imageHTML = `<div class="card-image-placeholder lightbox-media ${sanitizeHTML(item.bgClass)}">${item.emoji}</div>`;
     }
 
     const html = `
@@ -108,7 +115,18 @@ const GalleryModule = (() => {
       <button class="lightbox-nav lightbox-prev" aria-label="上一張"><i class="fas fa-chevron-left"></i></button>
       <button class="lightbox-nav lightbox-next" aria-label="下一張"><i class="fas fa-chevron-right"></i></button>`;
 
-    ModalModule.openModal(html, true);
+    // remove previous keyboard handler before opening new modal
+    if (activeKeyHandler) {
+      document.removeEventListener('keydown', activeKeyHandler);
+      activeKeyHandler = null;
+    }
+
+    ModalModule.openModal(html, true, () => {
+      if (activeKeyHandler) {
+        document.removeEventListener('keydown', activeKeyHandler);
+        activeKeyHandler = null;
+      }
+    });
 
     // lightbox image error fallback
     const lbImg = document.querySelector('.modal-body img[data-source="lightbox"]');
@@ -122,29 +140,13 @@ const GalleryModule = (() => {
     if (prev) prev.addEventListener('click', (e) => { e.stopPropagation(); navigate(-1); });
     if (next) next.addEventListener('click', (e) => { e.stopPropagation(); navigate(1); });
 
-    // keyboard — remove previous handler before adding new one (prevents accumulation)
-    if (activeKeyHandler) {
-      document.removeEventListener('keydown', activeKeyHandler);
-    }
+    // keyboard navigation
     const keyHandler = (e) => {
       if (e.key === 'ArrowLeft') navigate(-1);
       if (e.key === 'ArrowRight') navigate(1);
     };
     activeKeyHandler = keyHandler;
     document.addEventListener('keydown', keyHandler);
-
-    // cleanup on close
-    const modalOverlay = document.getElementById('modalOverlay');
-    if (modalOverlay) {
-      const obs = new MutationObserver(() => {
-        if (!modalOverlay.classList.contains('active')) {
-          document.removeEventListener('keydown', activeKeyHandler);
-          activeKeyHandler = null;
-          obs.disconnect();
-        }
-      });
-      obs.observe(modalOverlay, { attributes: true, attributeFilter: ['class'] });
-    }
   }
 
   function navigate(dir) {
